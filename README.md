@@ -1,1 +1,7 @@
-madcausebad__rma10_jyeung11_mhathaway10_wli15
+Here lies the basis for the Blog of All Blogs
+
+Roster
+- Ryan Ma
+- Jessica Yeung
+- May Hathaway
+- William Li
