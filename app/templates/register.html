@@ -18,7 +18,7 @@ P0: Da Art of Storytellin' (Pt. 2)
     Please register below.
   </h1>
 
-  <form action = "/login" method = "post"> <!--Goes to user home page, or redirects to login page if login fails-->
+  <form action = "/login" method = "post"> <!--Goes to login page, or redirects to register page if register fails-->
     <input type = "text" name = "username" placeholder = "Username" required>
     <br>
     <input type = "text" name = "pw" placeholder = "Password" required>
@@ -27,6 +27,10 @@ P0: Da Art of Storytellin' (Pt. 2)
     <input type = "submit" name= "signup" value = "Register">
   </form>
   <br>
+
+  <b>
+    {{error}} <!--Username already in use.-->
+  </b>
 
 </body>
 
