@@ -1,0 +1,51 @@
+<!--
+Team MadCauseBad - Ryan Ma, Jessica Yeung, May Hathaway, William Li
+SoftDev
+P0: Da Art of Storytellin' (Pt. 2)
+2021-01-08
+-->
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>LOGIN PAGE</title>
+</head>
+
+<body>
+  {{message}} <!--"Registration successful."-->
+  <h1>
+    Please login below.
+  </h1>
+
+  <form action = "/userhome" method = "post"> <!--Goes to user home page-->
+    <input type = "text" name = "username" placeholder = "Username" required>
+    <br>
+    <input type = "password" name = "pw" placeholder = "Password" required>
+    <br>
+    <br>
+    <input type = "submit" name= "userlogin" value = "Login">
+  </form>
+  <br>
+
+<b>
+  {{error}} <!--"Login failed."-->
+  </b>
+
+<h2>
+  If you do not have an account, please register below.
+  </h2>
+
+  <form action = "/register" method = "post"> <!--Goes to registration page-->
+    <input type = "submit" name = "gotoregister" value = "Register now">
+  </form>
+  <br>
+
+  <form action = "/home" method = "post"> <!--Goes back to home page without logging in-->
+    <input type = "submit" name = "returnhome" value = "Back to home">
+  </form>
+
+</body>
+
+</html>

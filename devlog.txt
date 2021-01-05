@@ -1,1 +1,5 @@
 firstL -- TIMESTAMP\n ( e.g.: topherM -- 1999-12-31 23:59 )
+
+jessicaY -- 2021-01-05 4:15
+      - Added html templates for user login and registration:
+        (login.html, register.html, home.html, userhome.html)
