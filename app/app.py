@@ -42,6 +42,7 @@ def login():
                 if(userArray[1] == req["passw"]):       #if pass matches with user
                     session["username"] = req["username"] # stores user info in cookies
                     session["passw"] = req["passw"]
+                    print (userArray + " " + "TEST")
                     return render_template("userhome.html", user = session["username"]) # directs user to user homepage on successful login
                 else:
                     return render_template('login.html', error = "Password")        #pass doesnt match with user
@@ -56,16 +57,16 @@ def userhome():
     if("logout" in session): # if logout button is pressed
         session.pop("username") # removes cookies upon logout
         session.pop("passw")
-        return render_template("/home")
-    return redirect("/") # if user tries to access userhome without being logged in, redirect to home
+        return render_template("home.html")
+    return render_template("userhome.html", user = session["username"])
 
 @app.route("/register", methods = ['GET', 'POST'])
 def register():
     if("signup" in session): # if register button is pressed, check the following
         req = request.form
-        
+
         accounts_db = c.execute("SELECT * FROM userInfo")
-        
+
         i=0
         for row in accounts_db:
             i+=1
@@ -78,7 +79,7 @@ def register():
         data = (userN, passW, id)
         insert = "INSERT INTO userInfo (Username, Password, id) VALUES (?, ?, ?);" #if username is unique, then store input info into database
         c.execute(insert, data)
-        return render_template("login.html") # if register is successful, direct to login page
+        return render_template("login.html", message = "Registration successful.") # if register is successful, direct to login page
     return render_template("register.html")
 
 if __name__ == "__main__":
