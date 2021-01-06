@@ -1,3 +1,5 @@
+# BlogBlog by MadCauseBad
+
 Here lies the basis for the Blog of All Blogs
 
 Roster
