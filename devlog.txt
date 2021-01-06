@@ -6,3 +6,6 @@ jessicaY -- 2021-01-05 4:15
 
 ryanM -- 2021-01-05 5:50
       - Added flask components into app.py for login and registration
+
+williamL -- 2021-01-05 7:45
+      - added sqlite database component to vertify login info and add registering info
