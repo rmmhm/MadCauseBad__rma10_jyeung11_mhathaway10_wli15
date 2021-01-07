@@ -12,3 +12,5 @@ williamL -- 2021-01-05 7:45
 
 jessicaY -- 2021-01-05 8:23
       - Minor edits for proper page redirection and input names
+williamL -- 2021-01-07 2:42
+      - added a new file with only the database functions and a csv file writer that sees what is inside the db
