@@ -15,26 +15,42 @@ def insert_login_data(userN, passW, id):     #when given data, it inerts into th
 	insert = "INSERT INTO userInfo (Username, Password, id) VALUES (?, ?, ?);"
 	data = (userN, passW, id)
 	c.execute(insert, data)
-
 def publish_draft(Userid):	#will move the entire draft to the Upublished database based on Userid
-	drafts_db = c.execute("SELECT * FROM Udraft")		#goes through the entire Udraft table
-	draft=""
-	for row in drafts_db:
-		draftArray = row
-		if(draftArray[0]==Userid):					#finds the row with matching Userid
-			draft = draftArray[1]					#takes the draft from corresponding Userid
+	Uid=Userid
+	c.execute('SELECT * FROM Udraft WHERE id=?', (Uid,))
+	data= c.fetchall()
+	data = (Userid, data[0][1])
 	insert = "INSERT INTO Upublished (id, Published) VALUES (?,?);"			#move the entire draft to Upublished table
-	data = (Userid, draft)
 	c.execute(insert, data)
-	c.execute("DELETE FROM Udraft WHERE id = 123")			#issue rn with setting id to a variable
+	c.execute("DELETE FROM Udraft WHERE id = ?", (Uid,))
 
 def save_draft(Userid, Userdraft):
 	c.execute("DELETE FROM Udraft WHERE id = 123")		#deletes any old draft to be replaced with new one
 	insert = "INSERT INTO Udraft (id, Drafts) VALUES (?,?);"
 	data = (Userid, Userdraft)
 	c.execute(insert,data)
-	
 
+def publish_blog(Userid, blog):
+	data = (Userid, blog)
+	insert = "INSERT INTO Upublished (id, Published) Values (?,?);"
+	c.execute(insert, data)
+
+def spit_blog(Userid):			#feed Userid to get all blogs that have same uid
+	username = Userid
+	c.execute('SELECT * FROM Upublished WHERE id=?', (username,))
+	data = c.fetchall()
+	i=0
+	for row in data:
+		blog = data[i][1]
+		print(blog)
+		i+=1
+
+
+
+
+
+
+print("-------------this is a test----------------")
 insert_login_data("william", "hi", 12) 		#actually passes html cookies to here to be given to the previous function
 insert_login_data("dog", "cat", 23)
 
@@ -62,16 +78,18 @@ print("-----------------------------------")
 save_draft(123,"The question is in a way meaningless, she knows, but one must ask.")
 save_draft(23,"During the first part of your life, you only become aware of happiness once you have lost it.")
 save_draft(1,"However, it had never occurred to me to contest this law, nor to imagine disobeying it")
-publish_draft(123)
-
-draft_db = c.execute("SELECT * FROM Udraft")
+publish_blog(1, "Christ, he thinks, by my age I ought to know")
+publish_draft(23)
+publish_blog(1, "But just as I didn not want to resent my kids")
+spit_blog(1)
+draft_db = c.execute("SELECT * FROM Udraft")			#should show Udraft that are saved in csv file drafts.csv
 with open('draft.csv', 'w') as f:
 	csv_writer = csv.writer(f)
 	for row in draft_db:
 		draftArray = row
 		csv_writer.writerow(draftArray)
 
-published_db = c.execute("SELECT * FROM Upublished")
+published_db = c.execute("SELECT * FROM Upublished")		#should show Upublished table in csv file published.csv
 with open('published.csv', 'w') as f:
 	csv_writer = csv.writer(f)
 	for row in published_db:
