@@ -43,4 +43,4 @@ jessicaY -- 2021-01-08 4:19
       - Edits to app.py, dbfunctions.py, and html templates
         - Browse page now has other blog links
         - (Single) User blog can be created with title
-        - Return buttons on blog.html and edit.html
+        - Return buttons on browse and user blog page
