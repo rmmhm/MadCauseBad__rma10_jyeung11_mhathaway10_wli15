@@ -20,7 +20,7 @@ def landing():
 
 @app.route("/home", methods = ['GET', 'POST'])
 def home():
-    printUsers()
+    # printUsers()
 
     if("username" in request.form): # if user is already logged in, direct to user homepage
         return redirect('/userhome')
@@ -60,8 +60,8 @@ def register():
 def userhome():
     if("username" in session):
 
-        if("myblog" in request.form):
-            if(checkBlog(getId(session["username"]))):
+        if("myblog" in request.form): # check if the my blog button is pressed
+            if(checkBlog(getId(session["username"]))): # check if the user has a blog
                 return redirect("/userhome/" + session["username"])
             return render_template("userhome.html", message = "No blog created")
 
@@ -91,9 +91,9 @@ def browse():
 @app.route("/userhome/<string:username>", methods = ['GET', 'POST'])
 def blog(username):
     if("username" in session):
-        entries = getEntries(getId(username)) # getEntries
-        if(not(checkUser(session["username"]))): # does the username exist, if not, display error page
+        if(not(checkUser(username))): # does the username exist, if not, display error page
             return render_template("dne.html", user = username)
+        entries = getEntries(getId(username)) # getEntries
         creator = session["username"] == username
         if("create" in request.form):
             createEntry(getId(username), request.form["title"], request.form["entrytext"])

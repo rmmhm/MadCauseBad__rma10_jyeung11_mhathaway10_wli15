@@ -124,18 +124,18 @@ def checkBlog(userID):
 			return True
 	return False
 
-def printUsers():
-    instance = database()
-
-    num = instance.cursor.execute("SELECT COUNT(*) FROM userInfo" ).fetchone()[0]
-    print("Number of users " + str(num))
-
-    raw_data = instance.cursor.execute("SELECT * FROM userInfo")
-    print("Printing users...")
-    for row in raw_data:
-        for col in row:
-            print(col, end=" ")
-        print()
+# def printUsers():
+#     instance = database()
+#
+#     num = instance.cursor.execute("SELECT COUNT(*) FROM userInfo" ).fetchone()[0]
+#     # print("Number of users " + str(num))
+#
+#     raw_data = instance.cursor.execute("SELECT * FROM userInfo")
+#     print("Printing users...")
+#     for row in raw_data:
+#         for col in row:
+#             print(col, end=" ")
+#         print()
 
 #createTables()
 #insertUserData("william", "Li", 12)
