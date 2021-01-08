@@ -66,8 +66,12 @@ def userhome():
             return render_template("userhome.html", message = "No blog created")
 
         if("createblog" in request.form):
-            createBlog(getId(session["username"]), request.form["blogtitle"])
-            return render_template("userhome.html", message = ("Blog Created" if not checkBlog(getId(session["username"])) else "Limited to one"))
+            if(not(checkBlog(getId(session["username"])))):
+                createBlog(getId(session["username"]), request.form["blogtitle"])
+                message = "Blog Created"
+            else:
+                message = "Limited to one"
+            return render_template("userhome.html", message = message)
 
         if("logout" in request.form): # if logout button is pressed
             session.pop("username") # removes cookies upon logout
