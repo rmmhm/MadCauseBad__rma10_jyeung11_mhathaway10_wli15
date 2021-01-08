@@ -3,7 +3,7 @@
 #P0 : Da Art of Storytellin' (Pt.2)
 #2021-01-08
 
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect
 
 import os
 import sqlite3
@@ -37,53 +37,81 @@ def home():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if("userlogin" in request.form): # if login button is pressed, check the following
-        req = request.form
-        accounts_db = c.execute("SELECT * FROM userInfo")
-        for row in accounts_db:
-            userArray = row             #creates arrays of every row in db to check if the pairing exist
-            if(userArray[0] == req["username"]):        #if user matches
-                if(userArray[1] == req["passw"]):       #if pass matches with user
-                    session["username"] = req["username"] # stores user info in cookies
-                    session["passw"] = req["passw"]
-                    print (userArray + " " + "TEST")
-                    return redirect("/userhome") # directs user to user homepage on successful login
-                else:
-                    return render_template('login.html', error = "Password")        #pass doesnt match with user
-        return render_template('login.html', error = "Username does not exist")      #no record of username
 
+        if(verifyLogin(request.form["username"], request.form["passw"])):
+
+            #insert user data to database
+
+            session["username"] = request.form["username"]
+            session["passw"] = request.form["passw"]
+            return redirect("/userhome") # directs user to user homepage on successful login
+        else:
+            return render_template('login.html', error = "Password")        #pass doesnt match with user
+        return render_template('login.html', error = "Username does not exist")      #no record of username
     if("username" in session): # if user is already logged in, direct to user homepage
         return redirect("/userhome")
     return render_template("login.html")
 
-@app.route("/userhome", methods=['GET', 'POST'])
-def userhome():
-    if("logout" in session): # if logout button is pressed
-        session.pop("username") # removes cookies upon logout
-        session.pop("passw")
-        return redirect("/home")
-    return render_template("userhome.html", user = session["username"])
-
 @app.route("/register", methods = ['GET', 'POST'])
 def register():
     if("signup" in session): # if register button is pressed, check the following
-        req = request.form
 
-        accounts_db = c.execute("SELECT * FROM userInfo")
+        # placeholder for checking if registration username is unique and for inserting user data into database upon successful registration
 
-        i=0
-        for row in accounts_db:
-            i+=1
-            userArray = row
-            if(userArray[0] == req["username"]):                #when the username already exists
-                return render_template("register.html", error = "Username already exists")
-        userN = req["username"]
-        passW= req["pw"]
-        id = i
-        data = (userN, passW, id)
-        insert = "INSERT INTO userInfo (Username, Password, id) VALUES (?, ?, ?);" #if username is unique, then store input info into database
-        c.execute(insert, data)
-        return redirect("/login.html") # if register is successful, direct to login page
+        return redirect("/login.html")
     return render_template("register.html")
+
+@app.route("/userhome", methods=['GET', 'POST'])
+def userhome():
+    if("username" in session);
+        if("myblog" in request.form):
+            return redirect("/userhome/" + session["username"])
+        if("createblog" in request.form && checkBlog(getId(session["username"]))): # checks if that user already has a blog
+            return render_template("userhome.html", message = "Blog Created")
+        else:
+            return render_template("userhome.html", message = "Limited to one blog")
+        if("logout" in request.form): # if logout button is pressed
+            session.pop("username") # removes cookies upon logout
+            session.pop("passw")
+            return redirect("/home")
+        return render_template("userhome.html", user = session["username"])
+    return redirect("/")
+
+@app.route("/browse", methods = ['GET', 'POST'])
+def browse():
+    if("username" in session):
+        if("blog" in request.form):
+            return redirect("/userhome/" + request.form["username"])
+        return render_template("browse.html", blogs = getBlogs()) # getBlogs
+    return redirect("/")
+
+@app.route("/userhome/<string:username>", methods = ['GET', 'POST'])
+def blog(username):
+    if("username" in session):
+        entries = getEntries(getId(username)) # getEntries
+        if(!checkUser()): # does the username exist, if not, display error page
+            return render_template("dne.html", user = username)
+        creator = session["username"] == username
+        if("create" in request.form):
+            createEntry(request.form["title"], request.form["entrytext"]) # createEntry
+            return render_template("blog.html", title = getBlogTitle(getId(username)), user = username, entry = getEntries(getId(username)), creator = creator, url = "/userhome/" + username)
+        if("edit" in request.form):
+            return redirect("/userhome/" + username + "/edit")
+        return render_template("blog.html", title = getBlogTitle(getId(username)), user = username, entry = getEntries(getId(username)), creator = creator, url = "/userhome/" + username)
+    return redirect("/")
+
+@app.route("/userhome/<string:username>/edit", methods = ['GET', 'POST'])
+def edit(username):
+    if("username" in session):
+        if(session["username"] == username):
+            if("edit" in request.form):
+                editEntry(getId(request.form["username"]), request.form["entrytitle"], request.form["entrytext"]) # editEntry
+                return render_template("edit.html", message = "Edit successful", entries = getEntries(getId(username))) # getEntries
+            if("back" in request.form):
+                return redirect("/userhome/" + username)
+            return render_template("edit.html", entries = getEntries(getId(username))) # getEntries
+        return redirect("/userhome/" + username)
+    return redirect("/")
 
 if __name__ == "__main__":
     app.secret_key = os.urandom(32)

@@ -11,6 +11,7 @@ c.execute("CREATE TABLE IF NOT EXISTS Ublurb (id INTEGER, UserBlurbs TEXT)")	#fo
 c.execute("CREATE TABLE IF NOT EXISTS Udraft (id INTEGER, Drafts TEXT)")	#for unfinished blogs
 
 c.execute("CREATE TABLE IF NOT EXISTS Upublished (id INTEGER, Published TEXT)")	#for published blogs to be posted
+
 def insert_login_data(userN, passW, id):     #when given data, it inerts into the database/create it
 	insert = "INSERT INTO userInfo (Username, Password, id) VALUES (?, ?, ?);"
 	data = (userN, passW, id)
@@ -23,7 +24,7 @@ def verify_login(username, password):
 		if(userArray[0] == userN):		#suppose to look through every row of the userInfo table and see if the the userN exist
 			if(userArray[1] == passW):
 				return True
-		return False
+	return False
 
 def publish_draft(userid):	#will move the entire draft to the Upublished database based on userid
 	uid=userid
@@ -40,7 +41,7 @@ def save_draft(userid, userdraft):
 	data = (userid, userdraft)
 	c.execute(insert,data)
 
-def publish_blog(userid, blog):
+def create_blog(userid, blog):
 	data = (userid, blog)
 	insert = "INSERT INTO Upublished (id, Published) Values (?,?);"
 	c.execute(insert, data)
@@ -70,7 +71,7 @@ def verify_login(userN, passW):
 			else:						#real userN but wrong password
 				print("didn't work")
 
-vertify_login("dog", "cat")					#should return worked
+verify_login("dog", "cat")					#should return worked
 
 accounts_db = c.execute("SELECT * FROM userInfo")		#looks through userInfo row by row and creates a csvfile with each row in the userInfo table
 with open('account.csv', 'w') as f:
