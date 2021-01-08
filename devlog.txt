@@ -38,3 +38,9 @@ ryanM -- 2021-01-08 2:36
 jessicaY -- 2021-01-08 3:20
       - Minor edits to app.py and dbfunctions.py
       - Added html files: blog, browse, dne, edit
+
+jessicaY -- 2021-01-08 4:19
+      - Edits to app.py, dbfunctions.py, and html templates
+        - Browse page now has other blog links
+        - (Single) User blog can be created with title
+        - Return buttons on blog.html and edit.html
