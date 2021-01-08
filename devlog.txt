@@ -44,3 +44,7 @@ jessicaY -- 2021-01-08 4:19
         - Browse page now has other blog links
         - (Single) User blog can be created with title
         - Return buttons on browse and user blog page
+
+jessicaY -- 2021-01-08 8:55
+      - style.css
+      - edit.html

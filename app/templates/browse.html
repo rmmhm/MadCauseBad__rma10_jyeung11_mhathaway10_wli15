@@ -10,14 +10,17 @@ P0: Da Art of Storytellin' (Pt. 2)
 
 <head>
   <title>Browse other blogs!></title>
+  <link rel="stylesheet" href="\static\style.css">
 </head>
-
 <body>
   <h1> View other users' blogs! </h1>
-  {{blogs}}
+  <!--{{blogs}}-->
   {% for blog in blogs %}
     <li><a href="/userhome/{{blog[1]}}">{{blog[1]}}'s blog here!</a></li>
   {%endfor%}
+  <br>
+  <form action = "/userhome" method = "post">
+    <input type = "submit" name "backhome" value = "Back">
+  </form>
 </body>
-
 </html>

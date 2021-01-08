@@ -11,6 +11,18 @@ P0: Da Art of Storytellin' (Pt. 2)
 
 <head>
   <title>Editing</title>
+  <link rel="stylesheet" href="\static\style.css">
 </head>
 
 {{message}}
+<body>
+{{entries}}
+<br>
+<form action = "/userhome/{{user}}" method = "post">
+  <input type = "text" name = "entrytitle" placeholder = "Blog entry title" required>
+  <input type = "text" name = "entrytext" value = {{entries}}>
+  <br>
+  <input type = "submit" name = "edit" value = "Save edits">
+</body>
+
+</html>
