@@ -11,4 +11,4 @@ Roster
 ## Launch Codes
 - `git clone git@github.com:rmmhm/madcausebad__rma10_jyeung11_mhathaway10_wli15.git` or `https://github.com/rmmhm/madcausebad__rma10_jyeung11_mhathaway10_wli15.git`
 - Add files in requirements.txt with `pip install` 
-- Run `python app.py`
+- Run `python madcausebad__rma10_jyeung11_mhathaway10_wli15/app/app.py`
