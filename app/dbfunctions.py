@@ -51,31 +51,37 @@ def verifyLogin(username, password):
     return data == 1
 
 def createBlog(userID, title):
+	instance = database()
 	data=(userID, title)
 	insert = "INSERT INTO Ublogs (id, title) VALUES (?, ?);"
-	c.execute(insert, data)
-
+	instance.cursor.execute(insert, data)
+	instance.db.commit()
 def createEntry(userID, title, entry):
+	instance = database()
 	data=(userID, title, entry)
 	insert = "INSERT INTO Uentries (id, title, entry) VALUES (?, ?, ?);"
-	c.execute(insert, data)
-
+	instance.cursor.execute(insert, data)
+	instance.db.commit()
 def editEntry(userID, title, revisedEntry):
+	instance = database()
 	user=userID
 	entryTitle=title
-	c.execute('DELETE FROM Uentries WHERE id=? AND title=?', (user, entryTitle))
+	instance.cursor.execute('DELETE FROM Uentries WHERE id=? AND title=?', (user, entryTitle))
 	newEntry=revisedEntry
 	createEntry(user, entryTitle, newEntry)
+	instance.db.commit()
 def getBlogTitle(userID):
+	instance = database()
 	user=userID
-	c.execute('SELECT * FROM Ublogs WHERE id=?', (user,))
-	data=c.fetchall()
+	instance.cursor.execute('SELECT * FROM Ublogs WHERE id=?', (user,))
+	data=instance.cursor.fetchall()
 	print(data[0][1])
 	return data[0][1]
 def getEntries(userID):
+	instance = database()
 	user=userID
-	c.execute('SELECT * FROM Uentries WHERE id=?', (user,))
-	data=c.fetchall()
+	instance.cursor.execute('SELECT * FROM Uentries WHERE id=?', (user,))
+	data=instance.cursor.fetchall()
 	return data
 	#bigStr=""
 	#i=0
@@ -88,9 +94,10 @@ def getEntries(userID):
 	#print(bigStr)
 	#return bigStr
 def getId(userN):
+	instance = database()
 	user = userN
-	c.execute('SELECT * FROM userinfo WHERE Username=?', (user,))
-	uId=c.fetchall()
+	instance.cursor.execute('SELECT * FROM userinfo WHERE Username=?', (user,))
+	uId=instance.cursor.fetchall()
 	print(uId[0][2])
 	return uId[0][2]
 
@@ -101,14 +108,16 @@ def checkUser(user):
     return data.fetchone()[0] > 0
 
 def getBlogs():
-	c.execute('SELECT * FROM Ublogs')
-	blogs=c.fetchall()
+	instance = database()
+	instance.cursor.execute('SELECT * FROM Ublogs')
+	blogs=instance.cursor.fetchall()
 	return blogs
 
 def checkBlog(userID):
+	instance = database()
 	user=userID
-	c.execute("SELECT * FROM Ublogs")
-	data = c.fetchall()
+	instance.cursor.execute("SELECT * FROM Ublogs")
+	data = instance.cursor.fetchall()
 	for row in data:
 		userArray=row
 		if(userArray[0]==user):
