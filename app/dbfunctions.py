@@ -27,9 +27,6 @@ def verifyLogin(username, password):	#gives user and pass to check if the info m
 			if(userArray[1]==passW):
 				print("correct password")
 				return True
-			else:
-				print("wrong pass")
-				return False
 	return False
 
 def createBlog(userID, title):
@@ -87,7 +84,20 @@ def checkUser(userN):
 	print("no user")
 	return False
 
-def getBlog():			
+def getBlogs():			
 	c.execute('SELECT * FROM Ublogs')
-	blog=c.fetchall()
-	return blog
+	blogs=c.fetchall()
+	return blogs
+
+def checkBlog(userID):
+	user=userID
+	c.execute("SELECT * FROM Ublogs")
+	data = c.fetchall()
+	for row in data:
+		userArray=row
+		if(userArray[0]==user):
+			return True
+	return False
+#createTables()
+#insertUserData("william", "Li", 12)
+#verifyLogin("cat", "Li")
