@@ -48,3 +48,6 @@ jessicaY -- 2021-01-08 4:19
 jessicaY -- 2021-01-08 8:55
       - style.css
       - edit.html
+
+ryanM -- 2021-01-08 12:10
+      - Fixed an issue with redirection when accessing blog pages
