@@ -18,8 +18,21 @@ P0: Da Art of Storytellin' (Pt. 2)
     Welcome to the blog site of all blog sites!
   </h1>
   <h2>
-    Welcome back, {{user}}
+    Welcome back, {{user}}.
   </h2>
+  {{message}}
+  <br>
+  <form action = "/userhome" method = "post"> <!--Goes to home page-->
+    <input type = "submit" name = "myblog" value = "My blog">
+  </form>
+
+  <form action = "/userhome" method = "post"> <!--Goes to home page-->
+    <input type = "submit" name = "createblog" value = "Create a blog">
+  </form>
+
+  <form action = "/browse" method = "post"> <!--Goes to home page-->
+    <input type = "submit" name = "blog" value = "View other blogs">
+  </form>
 
   <form action = "/userhome" method = "post"> <!--Goes to home page-->
     <input type = "submit" name = "logout" value = "Logout">

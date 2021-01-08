@@ -29,8 +29,12 @@ williamL -- 2021-01-07 21:54
       - Edited sqlite tables in design.pdf
       - Added component map
 
-williamL: -- 2021-01-08 0:42
+williamL -- 2021-01-08 0:42
       -finalized the dbfunctions and incorporated it into the flask apps.
 
-ryanM : -- 2021-01-08 2:36
+ryanM -- 2021-01-08 2:36
       - Fixed issues with endpoints and functions not being called upon, and issue with inserting into a table
+
+jessicaY -- 2021-01-08 3:20
+      - Minor edits to app.py and dbfunctions.py
+      - Added html files: blog, browse, dne, edit

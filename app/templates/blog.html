@@ -1,0 +1,34 @@
+<!--
+Team MadCauseBad - Ryan Ma, Jessica Yeung, May Hathaway, William Li
+SoftDev
+P0: Da Art of Storytellin' (Pt. 2)
+2021-01-08
+-->
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>{{user}}'s Blog'</title>
+</head>
+
+<body>
+  <h1>
+    {{user}}'s Blog
+  </h1>
+  {{error}}
+  <br>
+  {{entry}}
+  <br>
+  {%if creator%}
+  <form action = {{url}} method = "post">
+    <input type = "submit" name= "edit" value = "Edit">
+  </form>
+  {%endif%}
+  <br>
+
+
+</body>
+
+</html>

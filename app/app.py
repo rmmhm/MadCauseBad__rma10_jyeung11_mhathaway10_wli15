@@ -42,8 +42,6 @@ def login():
         else:
             return render_template('login.html', error = "Could not authenticate")        #pass doesnt match with user
 
-        return render_template('login.html', error = "Username does not exist")      #no record of username
-
     if("username" in session): # if user is already logged in, direct to user homepage
         return redirect("/userhome")
 
@@ -55,7 +53,7 @@ def register():
         if(not(checkUser(request.form['username']))):
             insertUserData(request.form['username'],request.form['passw'])
             return redirect("/login")
-        return render_template("register.html", error="username already exists")
+        return render_template("register.html", error="Username already exists.")
     return render_template("register.html")
 
 @app.route("/userhome", methods=['GET', 'POST'])
@@ -68,7 +66,8 @@ def userhome():
         if("createblog" in request.form):
             return render_template(
                 "userhome.html",
-                message = ("Blog Created" if not checkBlog(getId(session["username"])) else "Limited to one")
+                message = ("Blog Created" if not checkBlog(getId(session["username"])) else "Limited to one"),
+                user = session["username"]
             )
 
         if("logout" in request.form): # if logout button is pressed
@@ -84,7 +83,7 @@ def userhome():
 def browse():
     if("username" in session):
         if("blog" in request.form):
-            return redirect("/userhome/" + request.form["username"])
+            return redirect("/userhome/" + session["username"])
         return render_template("browse.html", blogs = getBlogs())
     return redirect("/")
 
@@ -92,7 +91,7 @@ def browse():
 def blog(username):
     if("username" in session):
         entries = getEntries(getId(username)) # getEntries
-        if(not(checkUser())): # does the username exist, if not, display error page
+        if(not(checkUser(session["username"]))): # does the username exist, if not, display error page
             return render_template("dne.html", user = username)
         creator = session["username"] == username
         if("create" in request.form):

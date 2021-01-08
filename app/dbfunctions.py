@@ -4,7 +4,7 @@ import csv
 # replace this with database instances in the functions
 DB_FILE="userinfo.db"
 # these should  be deleted
-db = sqlite3.connect(DB_FILE)
+db = sqlite3.connect(DB_FILE, check_same_thread=False)
 c = db.cursor()
 
 # instead of using c = db.cursor()
@@ -16,7 +16,7 @@ c = db.cursor()
 
 class database:
     def __init__(self, file=DB_FILE):
-        self.db = sqlite3.connect(file)
+        self.db = sqlite3.connect(file, check_same_thread=False)
         self.cursor = self.db.cursor()
 
     def close(self):
@@ -75,8 +75,8 @@ def getBlogTitle(userID):
 	user=userID
 	instance.cursor.execute('SELECT * FROM Ublogs WHERE id=?', (user,))
 	data=instance.cursor.fetchall()
-	print(data[0][1])
-	return data[0][1]
+	#print(data[0][1])
+	return data
 def getEntries(userID):
 	instance = database()
 	user=userID
