@@ -79,8 +79,6 @@ def userhome():
 @app.route("/browse", methods = ['GET', 'POST'])
 def browse():
     if("username" in session):
-        if("blog" in request.form):
-            return redirect("/userhome/" + session["username"])
         return render_template("browse.html", blogs = getBlogs())
     return redirect("/")
 

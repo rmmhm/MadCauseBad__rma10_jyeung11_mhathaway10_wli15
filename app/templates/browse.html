@@ -14,12 +14,10 @@ P0: Da Art of Storytellin' (Pt. 2)
 
 <body>
   <h1> View other users' blogs! </h1>
+  {{blogs}}
   {% for blog in blogs %}
-    <tr><td><a href="/home/blog/{{ blog['username']}}">{{blog["blogname"]}}</a><td>
-      <td>{{blog['Username']}}</td>
-      <td>{{blog["time"]}}</td>
-      <td class = "desc">{{blog["blogdescription"]}}</td>
-      <td>
+    <li><a href="/userhome/{{blog[1]}}">{{blog[1]}}'s blog here!</a></li>
+  {%endfor%}
 </body>
 
 </html>
