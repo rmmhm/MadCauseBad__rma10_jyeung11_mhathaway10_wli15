@@ -1,24 +1,30 @@
 firstL -- TIMESTAMP\n ( e.g.: topherM -- 1999-12-31 23:59 )
 
-jessicaY -- 2021-01-05 4:15
+jessicaY -- 2021-01-05 16:15
       - Added html templates for user login and registration:
         (login.html, register.html, home.html, userhome.html)
 
-ryanM -- 2021-01-05 5:50
+ryanM -- 2021-01-05 17:50
       - Added flask components into app.py for login and registration
 
-williamL -- 2021-01-05 7:45
+williamL -- 2021-01-05 19:45
       - added sqlite database component to vertify login info and add registering info
 
-jessicaY -- 2021-01-05 8:23
+jessicaY -- 2021-01-05 20:23
       - Minor edits for proper page redirection and input names
-williamL -- 2021-01-07 2:42
+
+williamL -- 2021-01-07 14:42
       - added a new file with only the database functions and a csv file writer that sees what is inside the db
 
-ryanM -- 2021-01-07 8:47
+ryanM -- 2021-01-07 20:47
       - encountered an issue with page not rendering the correct info, found out that the if statements
         at the head of every app.py function was checking (in session), and changed to (in request.form)
       - updated site redirections and template rendering such that URL accurately reflects the page displayed
 
-ryanM -- 2021-01-07 11:43
-      - added in flask components for viewing, creating, editing blogs and their entries
+jessicaY -- 2021-01-07 21:54
+      - Made updates and edits to design.pdf
+      - Added new site map
+
+williamL -- 2021-01-07 21:54
+      - Edited sqlite tables in design.pdf
+      - Added component map
