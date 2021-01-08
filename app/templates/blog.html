@@ -24,6 +24,10 @@ P0: Da Art of Storytellin' (Pt. 2)
   <br>
   {%if creator%}
   <form action = {{url}} method = "post">
+    <input type = "text" name = "entrytitle" value = "Entry Title">
+    <input type = "submit" name= "create" value = "Create">
+  </form>
+  <form action = {{url}} method = "post">
     <input type = "submit" name= "edit" value = "Edit">
   </form>
   {%endif%}

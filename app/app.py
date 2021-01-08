@@ -67,7 +67,7 @@ def userhome():
 
         if("createblog" in request.form):
             if(not(checkBlog(getId(session["username"])))):
-                createBlog(getId(session["username"]), request.form["blogtitle"])
+                createBlog(getId(session["username"]), session["username"], request.form["blogtitle"])
                 message = "Blog Created"
             else:
                 message = "Limited to one"
@@ -109,7 +109,7 @@ def edit(username):
         if(session["username"] == username):
             if("edit" in request.form):
                 editEntry(getId(request.form["username"]), request.form["entrytitle"], request.form["entrytext"])
-                return render_template("edit.html", message = "Edit successful", entries = getEntries(getId(username))) # getEntries
+                return render_template("edit.html", user = username, message = "Edit successful", entries = getEntries(getId(username))) # getEntries
             if("back" in request.form):
                 return redirect("/userhome/" + username)
             return render_template("edit.html", entries = getEntries(getId(username))) # getEntries

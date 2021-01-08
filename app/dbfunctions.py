@@ -31,10 +31,9 @@ def createTables():
 
     instance.cursor.execute("CREATE TABLE IF NOT EXISTS userInfo (Username TEXT, Password TEXT, id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
     instance.cursor.execute("CREATE TABLE IF NOT EXISTS Uentries (id INTEGER, title TEXT, entry TEXT)")
-    instance.cursor.execute("CREATE TABLE IF NOT EXISTS Ublogs (id INTEGER, title TEXT)")
+    instance.cursor.execute("CREATE TABLE IF NOT EXISTS Ublogs (id INTEGER, username TEXT, title TEXT)")
 
     instance.db.commit()
-
 
 def insertUserData(userN, passW):
     """ when given data, it inerts into the database/create it """
@@ -50,10 +49,10 @@ def verifyLogin(username, password):
 
     return data == 1
 
-def createBlog(userID, title):
+def createBlog(userID, username, title):
 	instance = database()
-	data=(userID, title)
-	insert = "INSERT INTO Ublogs (id, title) VALUES (?, ?);"
+	data=(userID, username, title)
+	insert = "INSERT INTO Ublogs (id, username, title) VALUES (?, ?, ?);"
 	instance.cursor.execute(insert, data)
 	instance.db.commit()
 def createEntry(userID, title, entry):
