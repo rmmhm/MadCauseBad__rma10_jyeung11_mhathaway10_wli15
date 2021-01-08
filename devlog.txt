@@ -19,3 +19,6 @@ ryanM -- 2021-01-07 8:47
       - encountered an issue with page not rendering the correct info, found out that the if statements
         at the head of every app.py function was checking (in session), and changed to (in request.form)
       - updated site redirections and template rendering such that URL accurately reflects the page displayed
+
+ryanM -- 2021-01-07 11:43
+      - added in flask components for viewing, creating, editing blogs and their entries
