@@ -15,28 +15,38 @@ def insert_login_data(userN, passW, id):     #when given data, it inerts into th
 	insert = "INSERT INTO userInfo (Username, Password, id) VALUES (?, ?, ?);"
 	data = (userN, passW, id)
 	c.execute(insert, data)
-def publish_draft(Userid):	#will move the entire draft to the Upublished database based on Userid
-	Uid=Userid
-	c.execute('SELECT * FROM Udraft WHERE id=?', (Uid,))
+
+def verify_login(username, password):
+	accounts_db = c.execute("SELECT * FROM userInfo")
+	for row in accounts_db:
+		userArray = row
+		if(userArray[0] == userN):		#suppose to look through every row of the userInfo table and see if the the userN exist
+			if(userArray[1] == passW):
+				return True
+		return False
+
+def publish_draft(userid):	#will move the entire draft to the Upublished database based on userid
+	uid=userid
+	c.execute('SELECT * FROM Udraft WHERE id=?', (uid,))
 	data= c.fetchall()
-	data = (Userid, data[0][1])
+	data = (userid, data[0][1])
 	insert = "INSERT INTO Upublished (id, Published) VALUES (?,?);"			#move the entire draft to Upublished table
 	c.execute(insert, data)
-	c.execute("DELETE FROM Udraft WHERE id = ?", (Uid,))
+	c.execute("DELETE FROM Udraft WHERE id = ?", (uid,))
 
-def save_draft(Userid, Userdraft):
+def save_draft(userid, userdraft):
 	c.execute("DELETE FROM Udraft WHERE id = 123")		#deletes any old draft to be replaced with new one
 	insert = "INSERT INTO Udraft (id, Drafts) VALUES (?,?);"
-	data = (Userid, Userdraft)
+	data = (userid, userdraft)
 	c.execute(insert,data)
 
-def publish_blog(Userid, blog):
-	data = (Userid, blog)
+def publish_blog(userid, blog):
+	data = (userid, blog)
 	insert = "INSERT INTO Upublished (id, Published) Values (?,?);"
 	c.execute(insert, data)
 
-def spit_blog(Userid):			#feed Userid to get all blogs that have same uid
-	username = Userid
+def spit_blog(userid):			#feed userid to get all blogs that have same uid
+	username = userid
 	c.execute('SELECT * FROM Upublished WHERE id=?', (username,))
 	data = c.fetchall()
 	i=0
@@ -46,15 +56,11 @@ def spit_blog(Userid):			#feed Userid to get all blogs that have same uid
 		i+=1
 
 
-
-
-
-
 print("-------------this is a test----------------")
 insert_login_data("william", "hi", 12) 		#actually passes html cookies to here to be given to the previous function
 insert_login_data("dog", "cat", 23)
 
-def vertify_login(userN, passW):
+def verify_login(userN, passW):
 	accounts_db = c.execute("SELECT * FROM userInfo")
 	for row in accounts_db:
 		userArray = row

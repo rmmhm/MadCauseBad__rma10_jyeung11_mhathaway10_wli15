@@ -1,13 +1,16 @@
-
-
 #Team MadCauseBad - Ryan Ma, Jessica Yeung, May Hathaway, William Li
 #SoftDev
 #P0 : Da Art of Storytellin' (Pt.2)
 #2021-01-08
 
 from flask import Flask, render_template, request, session
+
 import os
 import sqlite3
+
+from dbfunctions import insert_login_data
+from dbfunctions import publish_draft, save_draft
+from dbfunctions import publish_blog, spit_blog
 
 app = Flask(__name__)
 
@@ -16,7 +19,6 @@ db = sqlite3.connect(DB_FILE)
 c = db.cursor()
 
 c.execute("CREATE TABLE IF NOT EXISTS userInfo (Username TEXT, Password TEXT, id INTEGER PRIMARY KEY)")
-
 
 @app.route("/")
 def landing():
