@@ -61,7 +61,7 @@ def userhome():
     if("username" in session):
 
         if("myblog" in request.form):
-            if(checkBlog(getId(session["username"])))
+            if(checkBlog(getId(session["username"]))):
                 return redirect("/userhome/" + session["username"])
             return render_template("userhome.html", message = "No blog created")
 
