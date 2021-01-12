@@ -20,6 +20,7 @@ class database:
         self.cursor = self.db.cursor()
 
     def close(self):
+        self.db.commit()
         self.cursor.close()
         self.db.close()
 
@@ -30,80 +31,41 @@ def createTables():
     instance = database()
 
     instance.cursor.execute("CREATE TABLE IF NOT EXISTS userInfo (Username TEXT, Password TEXT, id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
-    instance.cursor.execute("CREATE TABLE IF NOT EXISTS Uentries (id INTEGER, title TEXT, entry TEXT)")
+    instance.cursor.execute("CREATE TABLE IF NOT EXISTS Uentries (id INTEGER, title TEXT, entry TEXT, eid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
     instance.cursor.execute("CREATE TABLE IF NOT EXISTS Ublogs (id INTEGER, username TEXT, title TEXT)")
-
-    instance.db.commit()
 
 def insertUserData(userN, passW):
     """ when given data, it inerts into the database/create it """
     instance = database()
     print(userN + ", " + passW)
     instance.cursor.execute("INSERT INTO userInfo (Username, Password) VALUES (?, ?)", (userN, passW))
-    instance.db.commit()
 
 def verifyLogin(username, password):
     """ gives user and pass to check if the info match """
     instance = database()
     data = instance.cursor.execute("SELECT COUNT(*) FROM userInfo WHERE Username=? AND Password=?", (username, password) ).fetchone()[0]
-
     return data == 1
+
+def checkUser(userN):
+    instance = database()
+    data = instance.cursor.execute("SELECT COUNT(*) FROM userInfo WHERE Username=?", (userN,))
+    return data.fetchone()[0] > 0
+
+def getId(userN):
+	instance = database()
+	instance.cursor.execute('SELECT * FROM userinfo WHERE Username=?', (userN,))
+	uId=instance.cursor.fetchall()
+	return uId[0][2]
 
 def createBlog(userID, username, title):
 	instance = database()
-	data=(userID, username, title)
+	data = (userID, username, title)
 	insert = "INSERT INTO Ublogs (id, username, title) VALUES (?, ?, ?);"
 	instance.cursor.execute(insert, data)
-	instance.db.commit()
-def createEntry(userID, title, entry):
-	instance = database()
-	data=(userID, title, entry)
-	insert = "INSERT INTO Uentries (id, title, entry) VALUES (?, ?, ?);"
-	instance.cursor.execute(insert, data)
-	instance.db.commit()
-def editEntry(userID, title, revisedEntry):
-	instance = database()
-	user=userID
-	entryTitle=title
-	instance.cursor.execute('DELETE FROM Uentries WHERE id=? AND title=?', (user, entryTitle))
-	newEntry=revisedEntry
-	createEntry(user, entryTitle, newEntry)
-	instance.db.commit()
-def getBlogTitle(userID):
-	instance = database()
-	user=userID
-	instance.cursor.execute('SELECT * FROM Ublogs WHERE id=?', (user,))
-	data=instance.cursor.fetchall()
-	#print(data[0][1])
-	return data[0][2]
-def getEntries(userID):
-	instance = database()
-	user=userID
-	instance.cursor.execute('SELECT * FROM Uentries WHERE id=?', (user,))
-	data=instance.cursor.fetchall()
-	return data
-	#bigStr=""
-	#i=0
-	#for row in data:
-	#	bigStr += data[i][1]
-	#	bigStr += "-"
-	#	bigStr += data[i][2]
-	#	bigStr += "\n"
-	#	i+=1
-	#print(bigStr)
-	#return bigStr
-def getId(userN):
-	instance = database()
-	user = userN
-	instance.cursor.execute('SELECT * FROM userinfo WHERE Username=?', (user,))
-	uId=instance.cursor.fetchall()
-	#print(uId[0][2])
-	return uId[0][2]
 
-def checkUser(user):
+def checkBlog(userID):
     instance = database()
-
-    data = instance.cursor.execute("SELECT COUNT(*) FROM userInfo WHERE Username=?", (user,))
+    data = instance.cursor.execute("SELECT COUNT(*) FROM Ublogs WHERE id=?", (userID,))
     return data.fetchone()[0] > 0
 
 def getBlogs():
@@ -112,30 +74,32 @@ def getBlogs():
 	blogs=instance.cursor.fetchall()
 	return blogs
 
-def checkBlog(userID):
+def getBlogTitle(userID):
 	instance = database()
-	user=userID
-	instance.cursor.execute("SELECT * FROM Ublogs")
-	data = instance.cursor.fetchall()
-	for row in data:
-		userArray=row
-		if(userArray[0]==user):
-			return True
-	return False
+	instance.cursor.execute('SELECT * FROM Ublogs WHERE id=?', (userID,))
+	data=instance.cursor.fetchall()
+	return data[0][2]
 
-# def printUsers():
-#     instance = database()
-#
-#     num = instance.cursor.execute("SELECT COUNT(*) FROM userInfo" ).fetchone()[0]
-#     # print("Number of users " + str(num))
-#
-#     raw_data = instance.cursor.execute("SELECT * FROM userInfo")
-#     print("Printing users...")
-#     for row in raw_data:
-#         for col in row:
-#             print(col, end=" ")
-#         print()
+def createEntry(userID, title, entry):
+	instance = database()
+	data = (userID, title, entry)
+	insert = "INSERT INTO Uentries (id, title, entry) VALUES (?, ?, ?);"
+	instance.cursor.execute(insert, data)
 
-#createTables()
-#insertUserData("william", "Li", 12)
-#verifyLogin("cat", "Li")
+def editEntry(entryID, entryTitle, entryText):
+    instance = database()
+    data = (entryTitle, entryText, entryID)
+    insert = 'UPDATE Uentries SET title=?, entry=? WHERE eid=?'
+    instance.cursor.execute(insert, data)
+
+def deleteEntry(entryID):
+    instance = database()
+    data = (entryID)
+    delete = 'DELETE FROM Uentries WHERE eid=?'
+    instance.cursor.execute(delete, data)
+
+def getEntries(userID):
+	instance = database()
+	instance.cursor.execute('SELECT * FROM Uentries WHERE id=?', (userID,))
+	data=instance.cursor.fetchall()
+	return data

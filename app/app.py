@@ -20,12 +20,12 @@ def landing():
 
 @app.route("/home", methods = ['GET', 'POST'])
 def home():
-    # printUsers()
-
     if("username" in request.form): # if user is already logged in, direct to user homepage
         return redirect('/userhome')
+
     if("gotologin" in request.form): # if login button is pressed, direct to login page
         return redirect('/login')
+
     if("register" in request.form): # if register button is pressed, direct to register page
         return redirect('/register')
     return render_template("home.html")
@@ -79,7 +79,6 @@ def userhome():
             return redirect("/home")
 
         return render_template("userhome.html", user = session["username"])
-
     return redirect("/")
 
 @app.route("/browse", methods = ['GET', 'POST'])
@@ -91,32 +90,30 @@ def browse():
 @app.route("/userhome/<string:username>", methods = ['GET', 'POST'])
 def blog(username):
     if("username" in session):
+
         if(not(checkUser(username))): # does the username exist, if not, display error page
             return render_template("dne.html", user = username)
         entries = getEntries(getId(username))
-        creator = session["username"] == username
-        if(len(entries) == 0):
-            return render_template("blog.html", title = getBlogTitle(getId(username)), user = username, creator = creator, url = "/userhome/" + username, error = "No entries yet")
+        creator = session["username"] == username # check if the person on the page is the creator of the blog
+
         if("create" in request.form):
-            createEntry(getId(username), request.form["title"], request.form["entrytext"])
-            return render_template("blog.html", title = getBlogTitle(getId(username)), user = username, entry = getEntries(getId(username)), creator = creator, url = "/userhome/" + username)
+            createEntry(getId(username), request.form["entrytitle"], request.form["entrytext"])
+            return render_template("blog.html", title = getBlogTitle(getId(username)), user = username, entries = getEntries(getId(username)), creator = creator, url = "/userhome/" + username)
+
+        if(len(entries) == 0): # check if entries exist for the blog
+            return render_template("blog.html", title = getBlogTitle(getId(username)), user = username, creator = creator, url = "/userhome/" + username, error = "No entries yet")
+
         if("edit" in request.form):
-            return redirect("/userhome/" + username + "/edit")
-        return render_template("blog.html", title = getBlogTitle(getId(username)), user = username, entry = getEntries(getId(username)), creator = creator, url = "/userhome/" + username)
+            editEntry(request.form["eid"], request.form["edittitle"], request.form["edittext"])
+            return render_template("blog.html", title = getBlogTitle(getId(username)), user = username, entries = getEntries(getId(username)), creator = creator, url = "/userhome/" + username)
+
+        if("delete" in request.form):
+            deleteEntry(request.form["eid"])
+            return render_template("blog.html", title = getBlogTitle(getId(username)), user = username, entries = getEntries(getId(username)), creator = creator, url = "/userhome/" + username)
+
+        return render_template("blog.html", title = getBlogTitle(getId(username)), user = username, entries = getEntries(getId(username)), creator = creator, url = "/userhome/" + username)
     return redirect("/")
 
-@app.route("/userhome/<string:username>/edit", methods = ['GET', 'POST'])
-def edit(username):
-    if("username" in session):
-        if(session["username"] == username):
-            if("edit" in request.form):
-                editEntry(getId(request.form["username"]), request.form["entrytitle"], request.form["entrytext"])
-                return render_template("edit.html", user = username, message = "Edit successful", entries = getEntries(getId(username))) # getEntries
-            if("back" in request.form):
-                return redirect("/userhome/" + username)
-            return render_template("edit.html", entries = getEntries(getId(username))) # getEntries
-        return redirect("/userhome/" + username)
-    return redirect("/")
 
 if __name__ == "__main__":
     app.secret_key = os.urandom(32)

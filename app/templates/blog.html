@@ -12,30 +12,55 @@ P0: Da Art of Storytellin' (Pt. 2)
 <head>
   <title>{{user}}'s Blog: {{title}}'</title>
   <link rel="stylesheet" href="\static\style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 
 <body>
   <h1>
     {{user}}'s Blog: {{title}}
   </h1>
+  <br>
   {{error}}
   <br>
-  {{entry}}
-  <br>
   {%if creator%}
-  <form action = {{url}} method = "post">
+  <br>
+  <form action = "{{url}}" method = "post">
     <input type = "text" name = "entrytitle" placeholder = "Entry Title" required>
     <input type = "text" name = "entrytext" placeholder = "Entry Text" required>
     <input type = "submit" name= "create" value = "Create">
   </form>
-  <form action = {{url}} method = "post">
-    <input type = "submit" name= "edit" value = "Edit">
-  </form>
-  {%endif%}
   <br>
+  {%endif%}
   <form action = "/userhome" method = "post">
     <input type = "submit" name "backhome" value = "Back">
   </form>
+  <br>
+  {% for entry in entries %}
+    <table class = "table">
+    <thead>
+      <th>{{entry[1]}}</th>
+    <tbody>
+      <tr><td>{{entry[2]}}</td></tr>
+      {%if creator%}
+      <tr><td>
+        <form action = "{{url}}" method = "post">
+          <input type = "text" name = "edittitle" placeholder = "Updated Title" required>
+          <input type = "text" name = "edittext" placeholder = "Updated Text" required>
+          <input type = "text" name = "eid" value = {{entry[3]}} style = "display:none" readonly>
+          <input type = "submit" name= "edit" value = "Edit">
+        </form>
+      </td></tr>
+      <tr><td>
+        <form action = "{{url}}" method = "post">
+          <input type = "text" name = "eid" value = {{entry[3]}} style = "display:none" readonly>
+          <input type = "submit" name = "delete" value = "Delete">
+        </form>
+      </td></tr>
+      {%endif%}
+    </tbody>
+    </table>
+  {%endfor%}
+  <br>
 
 </body>
 
