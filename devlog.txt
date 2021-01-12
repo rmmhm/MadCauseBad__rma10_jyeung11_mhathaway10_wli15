@@ -54,3 +54,6 @@ ryanM -- 2021-01-08 12:10
 
 ryanM -- 2021-01-11 19:17
       - Fixed an issue with displaying blog page with no entries
+
+ryanM -- 2021-01-11 20:45
+      - Fixed issues with creating, editing, and deleting entries and displaying them
