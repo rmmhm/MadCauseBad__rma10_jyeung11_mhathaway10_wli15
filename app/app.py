@@ -93,8 +93,10 @@ def blog(username):
     if("username" in session):
         if(not(checkUser(username))): # does the username exist, if not, display error page
             return render_template("dne.html", user = username)
-        entries = getEntries(getId(username)) # getEntries
+        entries = getEntries(getId(username))
         creator = session["username"] == username
+        if(len(entries) == 0):
+            return render_template("blog.html", title = getBlogTitle(getId(username)), user = username, creator = creator, url = "/userhome/" + username, error = "No entries yet")
         if("create" in request.form):
             createEntry(getId(username), request.form["title"], request.form["entrytext"])
             return render_template("blog.html", title = getBlogTitle(getId(username)), user = username, entry = getEntries(getId(username)), creator = creator, url = "/userhome/" + username)

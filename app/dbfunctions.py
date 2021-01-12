@@ -75,7 +75,7 @@ def getBlogTitle(userID):
 	instance.cursor.execute('SELECT * FROM Ublogs WHERE id=?', (user,))
 	data=instance.cursor.fetchall()
 	#print(data[0][1])
-	return data[0][1]
+	return data[0][2]
 def getEntries(userID):
 	instance = database()
 	user=userID
